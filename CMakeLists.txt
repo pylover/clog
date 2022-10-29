@@ -3,6 +3,8 @@ project(clog
     VERSION 1.0.0
     LANGUAGES C
 )
+
+
 configure_file(manifest.h.in manifest.h)
 
 
@@ -16,7 +18,22 @@ include_directories(
 
 
 add_library(clog OBJECT clog.c)
+option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
 
+
+# Install
+install(
+    TARGETS clog 
+    EXPORT clog
+    DESTINATION "lib/clog-${PROJECT_VERSION_MAJOR}")
+
+
+# CPack
+set(CPACK_SET_DESTDIR true)
+set(CPACK_PACKAGE_NAME clog)
+set(CPACK_PACKAGE_CONTACT "Vahid Mardani <vahid.mardani@gmail.com>")
+set(CPACK_GENERATOR DEB)
+include(CPack)
 
 # Testing
 include(CTest)
