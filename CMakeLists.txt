@@ -26,9 +26,13 @@ install(
     TARGETS clog 
     EXPORT clog
     DESTINATION "lib/clog-${PROJECT_VERSION_MAJOR}")
+install(
+    FILES clog.h 
+    DESTINATION "include/clog-${PROJECT_VERSION_MAJOR}")
 
 
 # CPack
+set(CPACK_PACKAGE_FILE_NAME "clog-${PROJECT_VERSION}")
 set(CPACK_SET_DESTDIR true)
 set(CPACK_PACKAGE_NAME clog)
 set(CPACK_PACKAGE_CONTACT "Vahid Mardani <vahid.mardani@gmail.com>")
