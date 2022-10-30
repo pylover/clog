@@ -17,7 +17,7 @@ include_directories(
 )
 
 
-add_library(clog OBJECT clog.c)
+add_library(clog STATIC clog.c)
 option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
 
 
@@ -25,10 +25,10 @@ option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
 install(
     TARGETS clog 
     EXPORT clog
-    DESTINATION "lib/clog-${PROJECT_VERSION_MAJOR}")
+    DESTINATION "lib")
 install(
     FILES clog.h 
-    DESTINATION "include/clog-${PROJECT_VERSION_MAJOR}")
+    DESTINATION "include")
 
 
 # CPack
@@ -39,9 +39,11 @@ set(CPACK_PACKAGE_CONTACT "Vahid Mardani <vahid.mardani@gmail.com>")
 set(CPACK_GENERATOR DEB)
 include(CPack)
 
+
 # Testing
 include(CTest)
 list(APPEND CMAKE_CTEST_ARGUMENTS "--output-on-failure")
+
 
 # CLog test
 add_executable(clog_test
