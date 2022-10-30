@@ -14,6 +14,8 @@ make install
 
 ## Usage
 
+Link the following example with `-lclog`.
+
 ```C
 #include <clog.h>
 
