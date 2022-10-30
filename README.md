@@ -2,16 +2,6 @@
 C Logging library
 
 
-## Build & Install
-
-```bash
-mkdir build
-cmake ..
-make
-make install
-```
-
-
 ## Usage
 
 Link the following example with `-lclog`.
@@ -27,25 +17,42 @@ void main() {
   // clog_verbosidy = CLOG_ERROR;
   // clog_verbosidy = CLOG_WARNING;
   // clog_verbosidy = CLOG_INFO;
-  clog_verbosidy = CLOG_DEBUG;
+  clog_verbosity = CLOG_DEBUG;
 
-  /* These functions will append newline */
+  /* These functions will append newline at the end of expression*/
   DEBUG("Foo %s", "bar"); 
   INFO("Foo %s", "bar"); 
   WARN("Foo %s", "bar"); 
   ERROR("Foo %s", "bar"); 
   FATAL("Foo %s", "bar"); 
 
-  /* These functions will not append newline*/
-  DEBUG("Foo %s\n", "bar"); 
-  INFO("Foo %s\n", "bar"); 
-  WARN("Foo %s\n", "bar"); 
-  ERROR("Foo %s\n", "bar"); 
-  FATAL("Foo %s", "bar"); 
+  /* These functions will not append newline at the end of expression*/
+  DEBUGN("Foo %s\n", "bar"); 
+  INFON("Foo %s\n", "bar"); 
+  WARNN("Foo %s\n", "bar"); 
+  ERRORN("Foo %s\n", "bar"); 
+  FATALN("Foo %s", "bar"); 
 }
 ```
 
-## Create debian package
+## Build & Install
+
+```bash
+mkdir build
+cd build
+cmake ..
+make
+```
+
+### Install with makefile
+
+```bash
+cd build
+make install
+```
+
+
+### Create debian package
 
 ```bash
 cd build
@@ -53,3 +60,22 @@ cpack
 ```
 
 After that, `libclog-*.deb` will be generated insode the `build` directory.
+
+#### Install using debian package
+
+```bash
+cd build
+sudo dpkg -i libclog-*.deb
+```
+
+##### Uninstall
+
+```bash
+sudo dpkg -P libclog
+```
+
+Or
+
+```bash
+sudo apt remove libclog
+```
