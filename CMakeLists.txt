@@ -17,18 +17,13 @@ include_directories(
 )
 
 
+# Static Library
 add_library(clog STATIC clog.c)
-option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
 
 
 # Install
-install(
-    TARGETS clog 
-    EXPORT clog
-    DESTINATION "lib")
-install(
-    FILES clog.h 
-    DESTINATION "include")
+install(TARGETS clog DESTINATION "lib")
+install(FILES clog.h DESTINATION "include")
 
 
 # CPack
