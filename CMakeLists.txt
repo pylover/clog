@@ -29,19 +29,7 @@ install(FILES clog.h DESTINATION "include")
 # CPack
 set(CPACK_PACKAGE_FILE_NAME "libclog-${PROJECT_VERSION}")
 set(CPACK_SET_DESTDIR true)
-set(CPACK_PACKAGE_NAME clog)
+set(CPACK_PACKAGE_NAME libclog)
 set(CPACK_PACKAGE_CONTACT "Vahid Mardani <vahid.mardani@gmail.com>")
 set(CPACK_GENERATOR DEB)
 include(CPack)
-
-
-# Testing
-include(CTest)
-list(APPEND CMAKE_CTEST_ARGUMENTS "--output-on-failure")
-
-
-# CLog test
-add_executable(clog_test
-    $<TARGET_OBJECTS:clog> 
-    clog_test.c)
-add_test(NAME clog_test COMMAND clog_test)
