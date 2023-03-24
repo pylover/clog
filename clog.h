@@ -35,6 +35,17 @@ clog_log(
         ...);
 
 
+void
+clog_vlog(
+        enum clog_verbosity level, 
+        const char *filename,
+        int lineno,
+        const char *function,
+        bool newline,
+        const char *format, 
+        va_list args);
+
+
 #define __FILENAME__ \
     (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
 
@@ -43,7 +54,14 @@ clog_log(
     clog_log(l, __FILENAME__, __LINE__ , __FUNCTION__, n, __VA_ARGS__)
 
 
+#define LOGV(l, n, ...) \
+    clog_vlog(l, __FILENAME__, __LINE__ , __FUNCTION__, n, __VA_ARGS__)
+
+
 #define CR "\n"
+
+
+/* Variable arguments: format, ... */
 #define DEBUG(...)   LOG(CLOG_DEBUG,   true, __VA_ARGS__)
 #define INFO(...)    LOG(CLOG_INFO,    true, __VA_ARGS__)
 #define WARN(...)    LOG(CLOG_WARNING, true, __VA_ARGS__)
@@ -56,6 +74,21 @@ clog_log(
 #define ERRORN(...)   LOG(CLOG_ERROR,   false, __VA_ARGS__)
 #define FATALN(...)   LOG(CLOG_FATAL,   false, __VA_ARGS__)
 
+/* va_list compatibility */
+#define DEBUGV(...)   LOGV(CLOG_DEBUG,   true, __VA_ARGS__)
+#define INFOV(...)    LOGV(CLOG_INFO,    true, __VA_ARGS__)
+#define WARNV(...)    LOGV(CLOG_WARNING, true, __VA_ARGS__)
+#define ERRORV(...)   LOGV(CLOG_ERROR,   true, __VA_ARGS__)
+#define FATALV(...)   LOGV(CLOG_FATAL,   true, __VA_ARGS__)
+
+#define DEBUGNV(...)   LOGV(CLOG_DEBUG,   false, __VA_ARGS__)
+#define INFONV(...)    LOGV(CLOG_INFO,    false, __VA_ARGS__)
+#define WARNNV(...)    LOGV(CLOG_WARNING, false, __VA_ARGS__)
+#define ERRORNV(...)   LOGV(CLOG_ERROR,   false, __VA_ARGS__)
+#define FATALNV(...)   LOGV(CLOG_FATAL,   false, __VA_ARGS__)
+
+
+/* Just prints into standard error */
 #define PRINTE(...)  dprintf(STDERR_FILENO, __VA_ARGS__)
 
 

@@ -31,8 +31,30 @@ clog_log(
         const char *format, 
         ...) {
    
-    int fd = (level <= CLOG_ERROR)? STDERR_FILENO: STDOUT_FILENO;
     va_list args;
+
+    if (format) { 
+        va_start(args, format);
+    }
+
+    clog_vlog(level, filename, lineno, function, newline, format, args);
+
+    if (format) { 
+        va_end(args);
+    }
+}
+
+
+void
+clog_vlog(
+        enum clog_verbosity level, 
+        const char *filename,
+        int lineno,
+        const char *function,
+        bool newline,
+        const char *format, 
+        va_list args) {
+    int fd = (level <= CLOG_ERROR)? STDERR_FILENO: STDOUT_FILENO;
 
     if (level > clog_verbosity) {
         return;
@@ -44,10 +66,8 @@ clog_log(
     }
     
     if (format) { 
-        va_start(args, format);
         dprintf(fd, " ");
         vdprintf(fd, format, args);
-        va_end(args);
     }
 
     if (errno && (level != CLOG_INFO)) {
@@ -61,7 +81,7 @@ clog_log(
     if (level == CLOG_FATAL) {
         exit(EXIT_FAILURE);
     }
-}
+} 
 
 
 enum clog_verbosity 
