@@ -2,6 +2,7 @@
 #define CLOG_H
 
 
+#include <stdarg.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdbool.h>

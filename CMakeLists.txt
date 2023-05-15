@@ -4,7 +4,6 @@ project(clog
     LANGUAGES C
 )
 
-
 configure_file(manifest.h.in manifest.h)
 
 
