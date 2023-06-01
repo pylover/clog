@@ -46,6 +46,36 @@ clog_log(
 
 
 void
+clog_hless(enum clog_verbosity level, bool newline, 
+        const char *format, ...) {
+    va_list args;
+    int fd = (level <= CLOG_ERROR)? STDERR_FILENO: STDOUT_FILENO;
+
+    if (level > clog_verbosity) {
+        return;
+    }
+
+    if (format) { 
+        va_start(args, format);
+    }
+
+    vdprintf(fd, format, args);
+
+    if (newline) {
+        dprintf(fd, CR);
+    }
+
+    if (format) { 
+        va_end(args);
+    }
+    
+    if (level == CLOG_FATAL) {
+        exit(EXIT_FAILURE);
+    }
+}
+
+
+void
 clog_vlog(
         enum clog_verbosity level, 
         const char *filename,

@@ -47,6 +47,11 @@ clog_vlog(
         va_list args);
 
 
+void
+clog_hless(enum clog_verbosity level, bool newline, 
+        const char *format, ...);
+
+
 #define __FILENAME__ \
     (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
 
@@ -69,11 +74,26 @@ clog_vlog(
 #define ERROR(...)   LOG(CLOG_ERROR,   true, __VA_ARGS__)
 #define FATAL(...)   LOG(CLOG_FATAL,   true, __VA_ARGS__)
 
+/* No newline appended */
 #define DEBUGN(...)   LOG(CLOG_DEBUG,   false, __VA_ARGS__)
 #define INFON(...)    LOG(CLOG_INFO,    false, __VA_ARGS__)
 #define WARNN(...)    LOG(CLOG_WARNING, false, __VA_ARGS__)
 #define ERRORN(...)   LOG(CLOG_ERROR,   false, __VA_ARGS__)
 #define FATALN(...)   LOG(CLOG_FATAL,   false, __VA_ARGS__)
+
+/* Headerless */
+#define DEBUGH(...)   clog_hless(CLOG_DEBUG,   true, __VA_ARGS__)
+#define INFOH(...)    clog_hless(CLOG_INFO,    true, __VA_ARGS__)
+#define WARNH(...)    clog_hless(CLOG_WARNING, true, __VA_ARGS__)
+#define ERRORH(...)   clog_hless(CLOG_ERROR,   true, __VA_ARGS__)
+#define FATALH(...)   clog_hless(CLOG_FATAL,   true, __VA_ARGS__)
+
+/* Headerless without trailing newline */
+#define DEBUGNH(...)   clog_hless(CLOG_DEBUG,   false, __VA_ARGS__)
+#define INFONH(...)    clog_hless(CLOG_INFO,    false, __VA_ARGS__)
+#define WARNNH(...)    clog_hless(CLOG_WARNING, false, __VA_ARGS__)
+#define ERRORNH(...)   clog_hless(CLOG_ERROR,   false, __VA_ARGS__)
+#define FATALNH(...)   clog_hless(CLOG_FATAL,   false, __VA_ARGS__)
 
 /* va_list compatibility */
 #define DEBUGV(...)   LOGV(CLOG_DEBUG,   true, __VA_ARGS__)
