@@ -9,12 +9,13 @@
 
 
 enum clog_verbosity {
-    CLOG_SILENT,     // 0
-    CLOG_FATAL,      // 1
-    CLOG_ERROR,      // 2
-    CLOG_WARNING,    // 3
-    CLOG_INFO,       // 4
-    CLOG_DEBUG,      // 5
+    CLOG_UNKNOWN = -1,
+    CLOG_SILENT = 0,
+    CLOG_FATAL = 1,
+    CLOG_ERROR = 2,
+    CLOG_WARNING = 3,
+    CLOG_INFO = 4,
+    CLOG_DEBUG = 5,
 };
 
 
@@ -22,7 +23,8 @@ extern enum clog_verbosity clog_verbosity;
 extern const char * clog_verbosities [];
 
 
-enum clog_verbosity clog_verbosity_from_string(char * verbosity);
+enum clog_verbosity
+clog_verbosity_from_string(const char * verbosity);
 
 
 void

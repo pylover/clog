@@ -12,12 +12,12 @@ enum clog_verbosity clog_verbosity = CLOG_DEBUG;
 
 
 const char * clog_verbosities[] = {
-    "never",   // 0
-    "fatal",   // 1
-    "error",   // 2
-    "warn",    // 3
-    "info",    // 4
-    "debug",   // 5
+    [CLOG_SILENT]  = "never",  // 0
+    [CLOG_FATAL]   = "fatal",  // 1
+    [CLOG_ERROR]   = "error",  // 2
+    [CLOG_WARNING] = "warn",   // 3
+    [CLOG_INFO]    = "info",   // 4
+    [CLOG_DEBUG]   = "debug",  // 5
 };
 
 
@@ -115,7 +115,7 @@ clog_vlog(
 
 
 enum clog_verbosity 
-clog_verbosity_from_string(char * verbosity) {
+clog_verbosity_from_string(const char * verbosity) {
     switch (verbosity[0]) {
         case 's':
             return CLOG_SILENT;
@@ -128,7 +128,8 @@ clog_verbosity_from_string(char * verbosity) {
         case 'i': 
             return CLOG_INFO;
         case 'd': 
-        default:
             return CLOG_DEBUG;
+        default:
+            return CLOG_UNKNOWN;
     }
 }
