@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.7)
 project(clog 
-    VERSION 1.2.1
+    VERSION 1.3.0
     LANGUAGES C
 )
 
@@ -32,3 +32,6 @@ set(CPACK_PACKAGE_NAME libclog)
 set(CPACK_PACKAGE_CONTACT "Vahid Mardani <vahid.mardani@gmail.com>")
 set(CPACK_GENERATOR DEB)
 include(CPack)
+
+# Examples
+add_subdirectory(examples)

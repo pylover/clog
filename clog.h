@@ -8,6 +8,9 @@
 #include <stdbool.h>
 
 
+typedef char* (*clog_strerror_t) (int errnum);
+
+
 enum clog_verbosity {
     CLOG_UNKNOWN = -1,
     CLOG_SILENT = 0,
@@ -19,6 +22,7 @@ enum clog_verbosity {
 };
 
 
+extern clog_strerror_t clog_strerror;
 extern enum clog_verbosity clog_verbosity;
 extern const char * clog_verbosities [];
 
@@ -29,28 +33,28 @@ clog_verbosity_from_string(const char * verbosity);
 
 void
 clog_log(
-        enum clog_verbosity level, 
+        enum clog_verbosity level,
         const char *filename,
         int lineno,
         const char *function,
         bool newline,
-        const char *format, 
+        const char *format,
         ...);
 
 
 void
 clog_vlog(
-        enum clog_verbosity level, 
+        enum clog_verbosity level,
         const char *filename,
         int lineno,
         const char *function,
         bool newline,
-        const char *format, 
+        const char *format,
         va_list args);
 
 
 void
-clog_hless(enum clog_verbosity level, bool newline, 
+clog_hless(enum clog_verbosity level, bool newline,
         const char *format, ...);
 
 
