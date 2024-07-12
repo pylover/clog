@@ -117,6 +117,10 @@ clog_vlog(
 
 enum clog_verbosity
 clog_verbosity_from_string(const char * verbosity) {
+    if ((verbosity == NULL) || (strlen(verbosity) < 1)) {
+        return CLOG_UNKNOWN;
+    }
+
     switch (verbosity[0]) {
         case 's':
             return CLOG_SILENT;
