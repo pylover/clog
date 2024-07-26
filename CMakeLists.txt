@@ -25,6 +25,10 @@ install(TARGETS clog DESTINATION "lib")
 install(FILES clog.h DESTINATION "include")
 
 
+# Uninstall
+add_custom_target(uninstall COMMAND xargs rm < install_manifest.txt)
+
+
 # CPack
 set(CPACK_PACKAGE_FILE_NAME "libclog-${PROJECT_VERSION}")
 set(CPACK_SET_DESTDIR true)
