@@ -19,6 +19,7 @@ enum clog_verbosity {
     CLOG_WARNING = 3,
     CLOG_INFO = 4,
     CLOG_DEBUG = 5,
+    CLOG_DEBUG2 = 6,
 };
 
 
@@ -74,6 +75,7 @@ clog_hless(enum clog_verbosity level, bool newline,
 
 
 /* Variable arguments: format, ... */
+#define DEBUG2(...)  LOG(CLOG_DEBUG2,  true, __VA_ARGS__)
 #define DEBUG(...)   LOG(CLOG_DEBUG,   true, __VA_ARGS__)
 #define INFO(...)    LOG(CLOG_INFO,    true, __VA_ARGS__)
 #define WARN(...)    LOG(CLOG_WARNING, true, __VA_ARGS__)
@@ -81,6 +83,7 @@ clog_hless(enum clog_verbosity level, bool newline,
 #define FATAL(...)   LOG(CLOG_FATAL,   true, __VA_ARGS__)
 
 /* No newline appended */
+#define DEBUG2N(...)  LOG(CLOG_DEBUG2,  false, __VA_ARGS__)
 #define DEBUGN(...)   LOG(CLOG_DEBUG,   false, __VA_ARGS__)
 #define INFON(...)    LOG(CLOG_INFO,    false, __VA_ARGS__)
 #define WARNN(...)    LOG(CLOG_WARNING, false, __VA_ARGS__)
@@ -88,6 +91,7 @@ clog_hless(enum clog_verbosity level, bool newline,
 #define FATALN(...)   LOG(CLOG_FATAL,   false, __VA_ARGS__)
 
 /* Headerless */
+#define DEBUG2H(...)  clog_hless(CLOG_DEBUG2,  true, __VA_ARGS__)
 #define DEBUGH(...)   clog_hless(CLOG_DEBUG,   true, __VA_ARGS__)
 #define INFOH(...)    clog_hless(CLOG_INFO,    true, __VA_ARGS__)
 #define WARNH(...)    clog_hless(CLOG_WARNING, true, __VA_ARGS__)
@@ -95,6 +99,7 @@ clog_hless(enum clog_verbosity level, bool newline,
 #define FATALH(...)   clog_hless(CLOG_FATAL,   true, __VA_ARGS__)
 
 /* Headerless without trailing newline */
+#define DEBUG2NH(...)  clog_hless(CLOG_DEBUG2,  false, __VA_ARGS__)
 #define DEBUGNH(...)   clog_hless(CLOG_DEBUG,   false, __VA_ARGS__)
 #define INFONH(...)    clog_hless(CLOG_INFO,    false, __VA_ARGS__)
 #define WARNNH(...)    clog_hless(CLOG_WARNING, false, __VA_ARGS__)
@@ -102,12 +107,14 @@ clog_hless(enum clog_verbosity level, bool newline,
 #define FATALNH(...)   clog_hless(CLOG_FATAL,   false, __VA_ARGS__)
 
 /* va_list compatibility */
+#define DEBUG2V(...)  LOGV(CLOG_DEBUG2,  true, __VA_ARGS__)
 #define DEBUGV(...)   LOGV(CLOG_DEBUG,   true, __VA_ARGS__)
 #define INFOV(...)    LOGV(CLOG_INFO,    true, __VA_ARGS__)
 #define WARNV(...)    LOGV(CLOG_WARNING, true, __VA_ARGS__)
 #define ERRORV(...)   LOGV(CLOG_ERROR,   true, __VA_ARGS__)
 #define FATALV(...)   LOGV(CLOG_FATAL,   true, __VA_ARGS__)
 
+#define DEBUG2NV(...)  LOGV(CLOG_DEBUG2,  false, __VA_ARGS__)
 #define DEBUGNV(...)   LOGV(CLOG_DEBUG,   false, __VA_ARGS__)
 #define INFONV(...)    LOGV(CLOG_INFO,    false, __VA_ARGS__)
 #define WARNNV(...)    LOGV(CLOG_WARNING, false, __VA_ARGS__)

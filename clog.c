@@ -19,6 +19,7 @@ const char * clog_verbosities[] = {
     [CLOG_WARNING] = "warn",   // 3
     [CLOG_INFO]    = "info",   // 4
     [CLOG_DEBUG]   = "debug",  // 5
+    [CLOG_DEBUG2]  = "debug2", // 6
 };
 
 
@@ -92,7 +93,7 @@ clog_vlog(
     }
 
     dprintf(fd, "[%-5s]", clog_verbosities[level]);
-    if (clog_verbosity == CLOG_DEBUG) {
+    if (clog_verbosity >= CLOG_DEBUG) {
         dprintf(fd, " [%s:%d %s]", filename, lineno, function);
     }
 
@@ -133,6 +134,9 @@ clog_verbosity_from_string(const char * verbosity) {
         case 'i':
             return CLOG_INFO;
         case 'd':
+            if (verbosity[strlen(verbosity) - 1] == '2') {
+                return CLOG_DEBUG2;
+            }
             return CLOG_DEBUG;
         default:
             return CLOG_UNKNOWN;
