@@ -17,7 +17,7 @@ include_directories(
 
 
 # Static Library
-add_library(clog STATIC clog.c)
+add_library(clog SHARED clog.c)
 
 
 # Install
