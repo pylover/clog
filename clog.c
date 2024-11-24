@@ -51,7 +51,11 @@ void
 clog_hless(enum clog_verbosity level, bool newline,
         const char *format, ...) {
     va_list args;
+#ifdef CONFIG_CLOG_ESP32
+    FILE *f = (level <= CLOG_ERROR)? stderr: stdout;
+#else
     int fd = (level <= CLOG_ERROR)? STDERR_FILENO: STDOUT_FILENO;
+#endif
 
     if (level > clog_verbosity) {
         return;
@@ -61,10 +65,18 @@ clog_hless(enum clog_verbosity level, bool newline,
         va_start(args, format);
     }
 
+#ifdef CONFIG_CLOG_ESP32
+    vfprintf(f, format, args);
+#else
     vdprintf(fd, format, args);
+#endif
 
     if (newline) {
+#ifdef CONFIG_CLOG_ESP32
+        fprintf(f, CR);
+#else
         dprintf(fd, CR);
+#endif
     }
 
     if (format) {
@@ -86,28 +98,53 @@ clog_vlog(
         bool newline,
         const char *format,
         va_list args) {
+#ifdef CONFIG_CLOG_ESP32
+    FILE *f = (level <= CLOG_ERROR)? stderr: stdout;
+#else
     int fd = (level <= CLOG_ERROR)? STDERR_FILENO: STDOUT_FILENO;
+#endif
 
     if (level > clog_verbosity) {
         return;
     }
 
+#ifdef CONFIG_CLOG_ESP32
+    fprintf(f, "[%-5s]", clog_verbosities[level]);
+#else
     dprintf(fd, "[%-5s]", clog_verbosities[level]);
+#endif
     if (clog_verbosity >= CLOG_DEBUG) {
+#ifdef CONFIG_CLOG_ESP32
+        fprintf(f, " [%s:%d %s]", filename, lineno, function);
+#else
         dprintf(fd, " [%s:%d %s]", filename, lineno, function);
+#endif
     }
 
     if (format) {
+#ifdef CONFIG_CLOG_ESP32
+        fprintf(f, " ");
+        vfprintf(f, format, args);
+#else
         dprintf(fd, " ");
         vdprintf(fd, format, args);
+#endif
     }
 
     if (errno && (level != CLOG_INFO)) {
+#ifdef CONFIG_CLOG_ESP32
+        fprintf(f, " -- %s. errno: %d", clog_strerror(errno), errno);
+#else
         dprintf(fd, " -- %s. errno: %d", clog_strerror(errno), errno);
+#endif
     }
 
     if (newline) {
+#ifdef CONFIG_CLOG_ESP32
+        fprintf(f, CR);
+#else
         dprintf(fd, CR);
+#endif
     }
 
     if (level == CLOG_FATAL) {
