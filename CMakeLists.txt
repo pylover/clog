@@ -8,10 +8,10 @@ project(clog
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -D_GNU_SOURCE=1")
 
 
-include_directories(
-    ${PROJECT_SOURCE_DIR}
-    ${PROJECT_BINARY_DIR}
-)
+# include_directories(
+#     ${PROJECT_SOURCE_DIR}
+#     ${PROJECT_BINARY_DIR}
+# )
 
 
 # Static Library
