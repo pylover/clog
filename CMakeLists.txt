@@ -4,8 +4,6 @@ project(clog
     LANGUAGES C
 )
 
-configure_file(manifest.h.in manifest.h)
-
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -D_GNU_SOURCE=1")
 
