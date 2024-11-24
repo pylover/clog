@@ -59,16 +59,16 @@ clog_hless(enum clog_verbosity level, bool newline,
         const char *format, ...);
 
 
-#define __FILENAME__ \
+#define __BASEFILENAME__ \
     (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
 
 
 #define LOG(l, n, ...) \
-    clog_log(l, __FILENAME__, __LINE__ , __FUNCTION__, n, __VA_ARGS__)
+    clog_log(l, __BASEFILENAME__, __LINE__ , __FUNCTION__, n, __VA_ARGS__)
 
 
 #define LOGV(l, n, ...) \
-    clog_vlog(l, __FILENAME__, __LINE__ , __FUNCTION__, n, __VA_ARGS__)
+    clog_vlog(l, __BASEFILENAME__, __LINE__ , __FUNCTION__, n, __VA_ARGS__)
 
 
 #define CR "\n"
