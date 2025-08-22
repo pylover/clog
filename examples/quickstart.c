@@ -1,4 +1,5 @@
 #include <errno.h>
+#include <string.h>
 
 #include "clog.h"
 
@@ -18,7 +19,7 @@ _strerror(int errnum) {
 
 int
 main() {
-    clog_verbosity = CLOG_DEBUG;
+    clog_verbositylevel = CLOG_DEBUG;
     clog_strerror = _strerror;
 
     errno = ECANCELED;

@@ -55,8 +55,9 @@ clog_verbosity_from_string(const char * verbosity) {
 
 
 int
-clog_vdprintf(int fd, int level, const char *file, unsigned int line,
-        const char *func, int flags, const char *fmt, va_list fmtargs) {
+clog_vdprintf(int fd, enum clog_verbositylevel level, const char *file,
+        unsigned int line, const char *func, int flags, const char *fmt,
+        va_list fmtargs) {
     int len = 0;
     char header[CONFIG_CLOG_HEADERMAX];
     const char *fn;
@@ -66,7 +67,7 @@ clog_vdprintf(int fd, int level, const char *file, unsigned int line,
         return -1;
     }
 
-    if (!(flags & CLOG_HEADLESS)) {
+    if (!(flags & CLOGHLESS)) {
         if (clog_verbositylevel < CLOG_DEBUG) {
             /* print less information on header due the verbosity level */
             len = sprintf(header, "[%-5s] ", clog_verbositylevels[level]);
@@ -86,13 +87,13 @@ clog_vdprintf(int fd, int level, const char *file, unsigned int line,
     len += strlen(fmt);
 
     /* errno and description */
-    if ((!(flags & CLOG_NOERRNO)) && (level != CLOG_INFO) && errno) {
+    if ((!(flags & CLOGNERRNO)) && (level != CLOG_INFO) && errno) {
         len += sprintf(header + len, " -- %s. errno: %d",
                 clog_strerror(errno), errno);
     }
 
     /* trailing newline */
-    if (flags & CLOG_NEWLINE) {
+    if (!(flags & CLOGNNL)) {
         header[len++] = '\n';
     }
     header[len] = '\0';
@@ -103,8 +104,9 @@ clog_vdprintf(int fd, int level, const char *file, unsigned int line,
 
 
 int
-clog_dprintf(int fd, int level, const char *file, unsigned int line,
-        const char *func, int flags, const char *fmt, ...) {
+clog_dprintf(int fd, enum clog_verbositylevel level, const char *file,
+        unsigned int line, const char *func, int flags, const char *fmt,
+        ...) {
     va_list fmtargs;
     int len = 0;
 
@@ -113,83 +115,3 @@ clog_dprintf(int fd, int level, const char *file, unsigned int line,
     va_end(fmtargs);
     return len;
 }
-
-
-// void
-// clog_log(int level, const char *file, int line, const char *func,
-//         bool newline, const char *fmt, ...) {
-//     va_list args;
-//
-//     if (fmt) {
-//         va_start(args, fmt);
-//     }
-//
-//     clog_vlog(level, file, line, func, newline, fmt, args);
-//
-//     if (fmt) {
-//         va_end(args);
-//     }
-// }
-//
-//
-// void
-// clog_vlog(int level, const char *file, int line, const char *func,
-//         bool newline, const char *fmt, va_list args) {
-//     int fd = (level <= CLOG_ERROR)? STDERR_FILENO: STDOUT_FILENO;
-//
-//     if (level > clog_verbositylevel) {
-//         return;
-//     }
-//
-//     dprintf(fd, "[%-5s]", clog_verbosities[level]);
-//     if (clog_verbositylevel >= CLOG_DEBUG) {
-//         dprintf(fd, " [%s:%d %s]", file, line, func);
-//     }
-//
-//     if (fmt) {
-//         dprintf(fd, " ");
-//         vdprintf(fd, fmt, args);
-//     }
-//
-//     if (errno && (level != CLOG_INFO)) {
-//         dprintf(fd, " -- %s. errno: %d", clog_strerror(errno), errno);
-//     }
-//
-//     if (newline) {
-//         dprintf(fd, CR);
-//     }
-//
-//     if (level == CLOG_FATAL) {
-//         exit(EXIT_FAILURE);
-//     }
-// }
-
-
-// void
-// clog_hless(enum clog_verbositylevel level, bool newline,
-//         const char *fmt, ...) {
-//     va_list args;
-//     int fd = (level <= CLOG_ERROR)? STDERR_FILENO: STDOUT_FILENO;
-//
-//     if (level > clog_verbositylevel) {
-//         return;
-//     }
-//
-//     if (fmt) {
-//         va_start(args, fmt);
-//     }
-//
-//     vdprintf(fd, fmt, args);
-//
-//     if (newline) {
-//         dprintf(fd, CR);
-//     }
-//
-//     if (fmt) {
-//         va_end(args);
-//     }
-//
-//     if (level == CLOG_FATAL) {
-//         exit(EXIT_FAILURE);
-//     }
-// }

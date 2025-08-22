@@ -1,6 +1,6 @@
 list(APPEND examples
-  # quickstart
-  minimal
+  quickstart
+  showcase
 )
 
 
