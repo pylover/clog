@@ -1,15 +1,19 @@
 cmake_minimum_required(VERSION 3.7)
 project(clog 
-    VERSION 2.0.1
+    VERSION 2.0.2
     LANGUAGES C
 )
+
+
+# set(CMAKE_VERBOSE_MAKEFILE ON)
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC")
 
 
 include_directories(${PROJECT_SOURCE_DIR})
 
 
-# Static Library
-add_library(clog STATIC clog.c)
+# target
+add_library(clog STATIC clog.c clog.h)
 
 
 # Install

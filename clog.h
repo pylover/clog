@@ -23,6 +23,45 @@
 /* standard */
 #include <stdarg.h>
 #include <unistd.h>
+#include <stdlib.h>
+
+
+/* types */
+enum clog_verbositylevel {
+    CLOG_UNKNOWN = -1,
+    CLOG_SILENT = 0,
+    CLOG_FATAL = 1,
+    CLOG_ERROR = 2,
+    CLOG_WARN = 3,
+    CLOG_INFO = 4,
+    CLOG_DEBUG = 5,
+    CLOG_TRACE = 6,
+};
+
+
+typedef void (*clog_exit_t) (int status);
+typedef char* (*clog_strerror_t) (int errnum);
+
+
+extern clog_exit_t clog_exit;
+extern clog_strerror_t clog_strerror;
+extern enum clog_verbositylevel clog_verbositylevel;
+extern char * clog_verbositylevels[];
+
+
+enum clog_verbositylevel
+clog_verbosity_from_string(const char * verbosity);
+
+
+int
+clog_vdprintf(int fd, enum clog_verbositylevel level, const char *file,
+        unsigned int line, const char *func, int flags, const char *fmt,
+        va_list fmtargs);
+
+
+int
+clog_dprintf(int fd, enum clog_verbositylevel level, const char *file,
+        unsigned int line, const char *func, int flags, const char *fmt, ...);
 
 
 /* flags */
@@ -97,43 +136,6 @@
 #define WARNV(f, valist) CLOGV(CLOG_WARN, 0, f, valist)
 #define ERRORV(f, valist) CLOGV(CLOG_ERROR, 0, f, valist)
 #define FATALV(f, valist) CLOGV(CLOG_FATAL, 0, f, valist)
-
-
-/* types */
-enum clog_verbositylevel {
-    CLOG_UNKNOWN = -1,
-    CLOG_SILENT = 0,
-    CLOG_FATAL = 1,
-    CLOG_ERROR = 2,
-    CLOG_WARN = 3,
-    CLOG_INFO = 4,
-    CLOG_DEBUG = 5,
-    CLOG_TRACE = 6,
-};
-
-
-typedef void (*clog_exit_t) (int status);
-typedef char* (*clog_strerror_t) (int errnum);
-
-extern clog_exit_t clog_exit;
-extern clog_strerror_t clog_strerror;
-extern enum clog_verbositylevel clog_verbositylevel;
-extern const char * clog_verbositylevels[];
-
-
-enum clog_verbositylevel
-clog_verbosity_from_string(const char * verbosity);
-
-
-int
-clog_vdprintf(int fd, enum clog_verbositylevel level, const char *file,
-        unsigned int line, const char *func, int flags, const char *fmt,
-        va_list fmtargs);
-
-
-int
-clog_dprintf(int fd, enum clog_verbositylevel level, const char *file,
-        unsigned int line, const char *func, int flags, const char *fmt, ...);
 
 
 #endif  // CLOG_H_

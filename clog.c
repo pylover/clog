@@ -18,7 +18,6 @@
  */
 /* standard */
 #include <stdio.h>
-#include <stdlib.h>
 #include <unistd.h>
 #include <stdarg.h>
 #include <errno.h>
@@ -32,20 +31,21 @@
 #define CONFIG_CLOG_HEADERMAX 512
 
 
-clog_exit_t clog_exit = exit;
-clog_strerror_t clog_strerror = strerror;
-enum clog_verbositylevel clog_verbositylevel = CLOG_DEBUG;
-
-
-const char * clog_verbositylevels[] = {
+char * clog_verbositylevels[] = {
     [CLOG_SILENT] = "silent",  // 0
     [CLOG_FATAL] = "fatal",  // 1
     [CLOG_ERROR] = "error",  // 2
-    [CLOG_WARN] = "warn",   // 3
-    [CLOG_INFO] = "info",   // 4
+    [CLOG_WARN] = "warn",  // 3
+    [CLOG_INFO] = "info",  // 4
     [CLOG_DEBUG] = "debug",  // 5
     [CLOG_TRACE] = "trace",  // 6
 };
+
+
+
+clog_exit_t clog_exit = NULL;
+clog_strerror_t clog_strerror = NULL;
+enum clog_verbositylevel clog_verbositylevel = CLOG_DEBUG;
 
 
 enum clog_verbositylevel
@@ -110,7 +110,7 @@ clog_vdprintf(int fd, enum clog_verbositylevel level, const char *file,
     /* errno and description */
     if ((!(flags & CLOGNERRNO)) && (level != CLOG_INFO) && errno) {
         len += sprintf(header + len, " -- %s. errno: %d",
-                clog_strerror(errno), errno);
+                (clog_strerror? clog_strerror: strerror)(errno), errno);
     }
 
     /* trailing newline */
@@ -123,7 +123,7 @@ clog_vdprintf(int fd, enum clog_verbositylevel level, const char *file,
     len = vdprintf(fd, header, fmtargs);
 
     if (level == CLOG_FATAL) {
-        clog_exit(EXIT_FAILURE);
+        (clog_exit? clog_exit: exit)(EXIT_FAILURE);
     }
     return len;
 }
