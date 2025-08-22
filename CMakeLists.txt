@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.7)
 project(clog 
-    VERSION 2.0.0
+    VERSION 2.0.1
     LANGUAGES C
 )
 

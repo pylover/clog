@@ -6,9 +6,17 @@
 #include "clog.h"
 
 
+void
+fakeexit(int status) {
+}
+
+
 int
 main() {
     int vl;
+
+    /* suppress exit during fatal messages */
+    clog_exit = fakeexit;
 
     printf("\n# NORMAL (HEADERFUL + errno)\n");
     errno = EINVAL;

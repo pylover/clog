@@ -82,7 +82,6 @@
 
 
 /* types */
-typedef char* (*clog_strerror_t) (int errnum);
 enum clog_verbositylevel {
     CLOG_UNKNOWN = -1,
     CLOG_SILENT = 0,
@@ -95,6 +94,10 @@ enum clog_verbositylevel {
 };
 
 
+typedef void (*clog_exit_t) (int status);
+typedef char* (*clog_strerror_t) (int errnum);
+
+extern clog_exit_t clog_exit;
 extern clog_strerror_t clog_strerror;
 extern enum clog_verbositylevel clog_verbositylevel;
 extern const char * clog_verbositylevels[];

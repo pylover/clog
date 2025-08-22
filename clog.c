@@ -1,5 +1,7 @@
 /* standard */
 #include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 #include <stdarg.h>
 #include <errno.h>
 #include <string.h>
@@ -12,6 +14,7 @@
 #define CONFIG_CLOG_HEADERMAX 512
 
 
+clog_exit_t clog_exit = exit;
 clog_strerror_t clog_strerror = strerror;
 enum clog_verbositylevel clog_verbositylevel = CLOG_DEBUG;
 
@@ -99,7 +102,12 @@ clog_vdprintf(int fd, enum clog_verbositylevel level, const char *file,
     header[len] = '\0';
 
     /* fire */
-    return vdprintf(fd, header, fmtargs);
+    len = vdprintf(fd, header, fmtargs);
+
+    if (level == CLOG_FATAL) {
+        clog_exit(EXIT_FAILURE);
+    }
+    return len;
 }
 
 
