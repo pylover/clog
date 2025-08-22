@@ -8,7 +8,6 @@ project(clog
 include_directories(${PROJECT_SOURCE_DIR})
 
 
-# set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -D_GNU_SOURCE=1")
 # Static Library
 add_library(clog STATIC clog.c)
 
@@ -29,6 +28,25 @@ set(CPACK_PACKAGE_NAME libclog)
 set(CPACK_PACKAGE_CONTACT "Vahid Mardani <vahid.mardani@gmail.com>")
 set(CPACK_GENERATOR DEB)
 include(CPack)
+
+
+# Lint
+set(PRETTYC_FLAGS
+    --recursive
+    --verbose=0
+    --repository=.
+    --extensions=c,h,in
+    --linelength=80
+    --headers=h,in
+    --includeorder=standardcfirst
+    --root=.
+    #--quiet
+    ${PROJECT_SOURCE_DIR}
+)
+add_custom_target(lint
+    COMMAND prettyc
+    ${PRETTYC_FLAGS}
+)
 
 
 # Examples
